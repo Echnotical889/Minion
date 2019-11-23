@@ -38,7 +38,7 @@ class Loader extends PluginBase implements Listener{
 
 	public function onCommand(CommandSender $sender, Command $command, string $label, array $args) : bool{
 		if($sender instanceof Player){
-			if($command->getName() === "미니언"){
+			if($command->getName() === "minion"){
 				if(!$sender->hasPermission("minion.command.create")){
 					return false;
 				}
@@ -56,7 +56,7 @@ class Loader extends PluginBase implements Listener{
 				$minion = EntityFactory::create(Minion::class, $sender->getWorld(), $nbt);
 
 				$minion->spawnToAll();
-			}elseif($command->getName() === "미니언상점"){
+			}elseif($command->getName() === "minionshop"){
 				if(!$sender->hasPermission("minion.command")){
 					return false;
 				}
@@ -113,7 +113,7 @@ class Loader extends PluginBase implements Listener{
 
 			$entity->spawnToAll();
 
-			$player->sendMessage($this->prefix . "미니언이 성공적으로 생성되었습니다.");
+			$player->sendMessage($this->prefix . "Minion created successfully.");
 
 			$item->setCount($item->getCount() - 1);
 			$player->getInventory()->setItemInHand($item);
@@ -123,17 +123,17 @@ class Loader extends PluginBase implements Listener{
 	public function sendShopUI(Player $player){
 		$encode = [
 			"type" => "form",
-			"title" => "미니언 상점",
-			"content" => "구매를 원하시는 미니언을 클릭해주세요!",
+			"title" => "Minion Shop",
+			"content" => "Please click!",
 			"buttons" => [
 				[
-					"text" => "나가기"
+					"text" => "Exit"
 				],
 				[
-					"text" => "농부 미니언 구매하기" . TextFormat::EOL . "가격: " . $this->getConfig()->getNested("farmer-price")
+					"text" => "Buy Farmer Minions" . TextFormat::EOL . "price: " . $this->getConfig()->getNested("farmer-price")
 				],
 				[
-					"text" => "광부 미니언 구매하기" . TextFormat::EOL . "가격: " . $this->getConfig()->getNested("miner-price")
+					"text" => "Buy miner minions" . TextFormat::EOL . "price: " . $this->getConfig()->getNested("miner-price")
 				]
 			]
 		];
@@ -156,22 +156,22 @@ class Loader extends PluginBase implements Listener{
 						$price = (int)$this->getConfig()->getNested("farmer-price");
 
 						if(EconomyAPI::getInstance()->reduceMoney($player, $price) !== EconomyAPI::RET_SUCCESS){
-							$player->sendMessage($this->prefix . "돈이 부족합니다. 필요한 돈: " . $price);
+							$player->sendMessage($this->prefix . "You have ran out of money. " . $price);
 							break;
 						}
 
-						$player->sendMessage($this->prefix . "구매하였습니다.");
+						$player->sendMessage($this->prefix . "Purchased.");
 						$player->getInventory()->addItem($this->getMinionItem($player, Minion::TYPE_WHEAT, $player->getSkin()));
 						break;
 					case 2:
 						$price = (int)$this->getConfig()->getNested("miner-price");
 
 						if(EconomyAPI::getInstance()->reduceMoney($player, $price) !== EconomyAPI::RET_SUCCESS){
-							$player->sendMessage($this->prefix . "돈이 부족합니다. 필요한 돈: " . $price);
+							$player->sendMessage($this->prefix ."You don't have enough money. It costs " . $price);
 							break;
 						}
 
-						$player->sendMessage($this->prefix . "구매하였습니다.");
+						$player->sendMessage($this->prefix . "Purchased.");
 						$player->getInventory()->addItem($this->getMinionItem($player, Minion::TYPE_MINE, $player->getSkin()));
 						break;
 				}
@@ -211,7 +211,7 @@ class Loader extends PluginBase implements Listener{
 
 							$minion->close();
 
-							$player->sendMessage($this->prefix . "미니언을 회수했습니다.");
+							$player->sendMessage($this->prefix . "I recovered the minions.");
 
 							$inv->onClose($player);
 							break;
