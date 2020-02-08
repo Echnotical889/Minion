@@ -2,8 +2,8 @@ name: Minion
 author: alvin0319
 main: Minion\Loader
 version: 1.0.0
-api: 4.0.0
-description: MINION!!!!!!!!!!!!!
+api: [4.0.0, 3.11.4, 3.0.0]
+description: Minion that help you 
 
 commands:
   미니언:
